@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocabulary BD — Learn English words with Bangla meanings</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <div>
+      <h1 data-i18n="appTitle">Vocabulary BD</h1>
+      <p class="subtitle" data-i18n="appSubtitle">Learn English words with Bangla meanings — flashcards, quizzes and progress tracking, fully offline.</p>
+    </div>
+    <button id="langBtn" class="btn ghost" type="button">বাংলা</button>
+  </div>
+</header>
+
+<nav class="tabs wrap" role="tablist" aria-label="Sections">
+  <button class="tab active" data-tab="learn" role="tab" type="button" data-i18n="tabLearn">Learn</button>
+  <button class="tab" data-tab="quiz" role="tab" type="button" data-i18n="tabQuiz">Quiz</button>
+  <button class="tab" data-tab="browse" role="tab" type="button" data-i18n="tabBrowse">Browse</button>
+  <button class="tab" data-tab="stats" role="tab" type="button" data-i18n="tabStats">Progress</button>
+</nav>
+
+<main class="wrap">
+  <!-- LEARN -->
+  <section id="panel-learn" class="panel">
+    <div class="row between">
+      <h2 data-i18n="learnTitle">Flashcards</h2>
+      <label class="field inline"> <span data-i18n="levelAll">All levels</span>
+        <select id="learnLevel">
+          <option value="all" data-i18n="levelAll">All levels</option>
+          <option value="beginner" data-i18n="levelBeginner">Beginner</option>
+          <option value="intermediate" data-i18n="levelIntermediate">Intermediate</option>
+          <option value="advanced" data-i18n="levelAdvanced">Advanced</option>
+        </select>
+      </label>
+    </div>
+    <p class="hint" data-i18n="learnHint">Tap the card to see the Bangla meaning and an example.</p>
+    <div id="flashcard" class="card flash" tabindex="0" role="button" aria-label="Flashcard">
+      <div class="flash-top"><span id="fcLevel" class="badge"></span><span id="fcKnown" class="badge known hidden" data-i18n="knownBadge">Known</span></div>
+      <div id="fcFront">
+        <div id="fcWord" class="fc-word">—</div>
+        <div id="fcPos" class="fc-pos">—</div>
+        <div class="fc-tap" data-i18n="tapToFlip">Tap to flip</div>
+      </div>
+      <div id="fcBack" class="hidden">
+        <div id="fcBn" class="fc-bn">—</div>
+        <div class="fc-ex-label" data-i18n="exampleLabel">Example</div>
+        <div id="fcEx" class="fc-ex">—</div>
+        <div id="fcExBn" class="fc-exbn">—</div>
+      </div>
+    </div>
+    <div id="fcCount" class="count"></div>
+    <div class="row gap">
+      <button id="fcPrev" class="btn" type="button" data-i18n="btnPrev">Previous</button>
+      <button id="fcNext" class="btn primary" type="button" data-i18n="btnNext">Next</button>
+      <button id="fcShuffle" class="btn" type="button" data-i18n="btnShuffle">Shuffle</button>
+    </div>
+    <div class="row gap">
+      <button id="fcKnownBtn" class="btn" type="button" data-i18n="btnMarkKnown">I know this</button>
+      <button id="fcBookmarkBtn" class="btn" type="button" data-i18n="btnBookmark">Bookmark</button>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="panel-quiz" class="panel hidden">
+    <h2 data-i18n="quizTitle">Quiz — pick the correct Bangla meaning</h2>
+    <div id="quizSetup">
+      <label class="field"> <span data-i18n="levelAll">All levels</span>
+        <select id="quizLevel">
+          <option value="all" data-i18n="levelAll">All levels</option>
+          <option value="beginner" data-i18n="levelBeginner">Beginner</option>
+          <option value="intermediate" data-i18n="levelIntermediate">Intermediate</option>
+          <option value="advanced" data-i18n="levelAdvanced">Advanced</option>
+        </select>
+      </label>
+      <p class="hint"><span data-i18n="quizCount">Questions</span>: <strong id="quizCountLabel">10</strong></p>
+      <button id="quizStartBtn" class="btn primary" type="button" data-i18n="quizStart">Start quiz</button>
+      <p id="quizEmpty" class="empty hidden" data-i18n="quizEmpty">Not enough words in this level yet.</p>
+      <p class="hint"><span data-i18n="quizBest">Best score</span>: <strong id="quizBestLabel">—</strong> · <span data-i18n="quizRounds">Quizzes played</span>: <strong id="quizRoundsLabel">0</strong></p>
+    </div>
+    <div id="quizPlay" class="hidden">
+      <div class="row between"><strong id="quizProgress"></strong><strong id="quizScoreLive"></strong></div>
+      <div class="quiz-q">
+        <div class="quiz-word" id="quizWord">—</div>
+        <div class="quiz-pos" id="quizPos">—</div>
+      </div>
+      <div id="quizOptions" class="options"></div>
+      <p id="quizFeedback" class="feedback" aria-live="polite"></p>
+      <button id="quizNextBtn" class="btn primary hidden" type="button" data-i18n="nextQ">Next question</button>
+    </div>
+    <div id="quizResult" class="hidden">
+      <h3 data-i18n="quizFinish">Quiz finished!</h3>
+      <p class="big"><span data-i18n="quizScore">Score</span>: <strong id="quizFinalScore"></strong></p>
+      <p><span data-i18n="streakLabel">Streak</span>: <strong id="quizFinalStreak"></strong></p>
+      <h4 data-i18n="reviewTitle">Review your answers</h4>
+      <div id="quizReview"></div>
+      <button id="quizAgainBtn" class="btn primary" type="button" data-i18n="quizAgain">Play again</button>
+    </div>
+  </section>
+
+  <!-- BROWSE -->
+  <section id="panel-browse" class="panel hidden">
+    <h2 data-i18n="browseTitle">All words</h2>
+    <div class="row gap wrap2">
+      <input id="browseSearch" class="input grow" type="search" data-i18n-ph="searchPh" placeholder="Search English or Bangla…" autocomplete="off">
+      <select id="browseLevel" class="input">
+        <option value="all" data-i18n="levelAll">All levels</option>
+        <option value="beginner" data-i18n="levelBeginner">Beginner</option>
+        <option value="intermediate" data-i18n="levelIntermediate">Intermediate</option>
+        <option value="advanced" data-i18n="levelAdvanced">Advanced</option>
+      </select>
+    </div>
+    <div class="row gap chips" role="group" aria-label="Filter">
+      <button class="chip active" data-filter="all" type="button" data-i18n="filterAll">All</button>
+      <button class="chip" data-filter="known" type="button" data-i18n="filterKnown">Known</button>
+      <button class="chip" data-filter="unknown" type="button" data-i18n="filterUnknown">Learning</button>
+      <button class="chip" data-filter="bookmarked" type="button" data-i18n="filterBookmarked">Bookmarked</button>
+    </div>
+    <p id="browseCount" class="count"></p>
+    <div id="browseList" class="wordlist"></div>
+    <p id="browseEmpty" class="empty hidden" data-i18n="noResults">No words match your search.</p>
+  </section>
+
+  <!-- STATS / DATA -->
+  <section id="panel-stats" class="panel hidden">
+    <h2 data-i18n="statsTitle">Your progress</h2>
+    <div class="stats-grid">
+      <div class="stat"><div class="stat-num" id="statKnown">0</div><div class="stat-label" data-i18n="statKnown">Words known</div></div>
+      <div class="stat"><div class="stat-num" id="statBookmarked">0</div><div class="stat-label" data-i18n="statBookmarked">Bookmarked</div></div>
+      <div class="stat"><div class="stat-num" id="statBest">0%</div><div class="stat-label" data-i18n="statBest">Best quiz score</div></div>
+      <div class="stat"><div class="stat-num" id="statRounds">0</div><div class="stat-label" data-i18n="statRounds">Quizzes played</div></div>
+    </div>
+    <h3 data-i18n="statProgress">Learning progress</h3>
+    <div class="progress"><div id="progressBar" class="progress-fill" style="width:0%"></div></div>
+    <p id="progressLabel" class="count"></p>
+    <h3 data-i18n="dataTitle">Your data</h3>
+    <div class="row gap">
+      <button id="exportBtn" class="btn" type="button" data-i18n="btnExport">Export progress</button>
+      <button id="importBtn" class="btn" type="button" data-i18n="btnImport">Import progress</button>
+      <input id="importFile" type="file" accept="application/json,.json" class="hidden">
+      <button id="resetBtn" class="btn danger" type="button" data-i18n="btnReset">Erase all progress</button>
+    </div>
+    <p id="dataMsg" class="hint" aria-live="polite"></p>
+  </section>
+
+  <footer>
+    <p data-i18n="footerNote">90 hand-picked words for Bangladeshi learners. Meanings are short dictionary-style glosses, not exam answers. Works fully offline — your progress stays on your device.</p>
+  </footer>
+</main>
+
+<script src="js/data.js"></script>
+<script src="js/core.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
